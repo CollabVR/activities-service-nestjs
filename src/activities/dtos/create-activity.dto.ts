@@ -10,10 +10,10 @@ export class CreateActivityDto {
 	public description: string;
 	@ApiProperty()
 	@IsDateString()
-	public startTime: Date;
+	public startTime: string;
 	@ApiProperty()
 	@IsDateString()
-	public endTime: Date;
+	public endTime: string;
 	@ApiProperty()
 	@IsNumber()
 	public maxParticipants: number;

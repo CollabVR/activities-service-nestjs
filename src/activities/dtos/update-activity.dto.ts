@@ -19,11 +19,11 @@ export class UpdateActivityDto {
 	@ApiProperty()
 	@IsDateString()
 	@IsOptional()
-	startTime?: Date;
+	startTime?: string;
 	@ApiProperty()
 	@IsDateString()
 	@IsOptional()
-	endTime?: Date;
+	endTime?: string;
 	@ApiProperty()
 	@IsNumber()
 	@IsOptional()
