@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//create a prisma model for an Activity with the following fields: id, name, description, startingTime, endingTime, durationTime, maxParticipants, participants
+model Activity {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  description     String
+  startingTime    DateTime
+  endingTime      DateTime
+  durationTime    Int
+  maxParticipants Int
+  participants    Int[]
+  status     String
+  moderators      Int[]
+  date            DateTime
+  environmentId   Int
+}
+ 

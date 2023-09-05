@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    build: ./
+    container_name: activity_service
+    ports:
+      - '3200:3200'
+    depends_on:
+      - activities_db
+    networks:
+      - collabvr_network
+    env_file:
+      - .env
+
+  activities_db:
+    image: postgres:13
+    container_name: activities_db
+    env_file:
+      - .env
+    ports:
+      - 5433:5432
+    volumes:
+      - ".postgres-backend:/data/db"
+    networks:
+      - collabvr_network
+
+networks:
+  collabvr_network:
+    driver: bridge
