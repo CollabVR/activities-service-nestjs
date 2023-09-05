@@ -10,9 +10,9 @@ export class ActivityEntity extends AggregateRoot implements Activity {
 	@ApiProperty()
 	description: string;
 	@ApiProperty()
-	startingTime: Date;
+	startingTime: string;
 	@ApiProperty()
-	endingTime: Date;
+	endingTime: string;
 	@ApiProperty()
 	durationTime: number;
 	@ApiProperty()
@@ -22,7 +22,7 @@ export class ActivityEntity extends AggregateRoot implements Activity {
 	@ApiProperty({ type: [Number] })
 	moderators: number[];
 	@ApiProperty()
-	date: Date;
+	date: string;
 	@ApiProperty()
 	environmentId: number;
 	@ApiProperty()

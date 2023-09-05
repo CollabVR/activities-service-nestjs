@@ -15,14 +15,14 @@ model Activity {
   id              Int      @id @default(autoincrement())
   name            String   @unique
   description     String
-  startingTime    DateTime
-  endingTime      DateTime
+  startingTime    String
+  endingTime      String
   durationTime    Int
   maxParticipants Int
   participants    Int[]
   status     String
   moderators      Int[]
-  date            DateTime
+  date            String
   environmentId   Int
 }
  

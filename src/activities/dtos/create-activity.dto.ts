@@ -12,8 +12,6 @@ export class CreateActivityDto {
 	@ApiProperty()
 	public date: string;
 	@ApiProperty()
-	public durationTime: string;
-	@ApiProperty()
 	public maxParticipants: number;
 	@ApiProperty()
 	public environmentId: number;
