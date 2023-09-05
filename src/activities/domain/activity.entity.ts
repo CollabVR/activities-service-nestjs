@@ -10,19 +10,15 @@ export class ActivityEntity extends AggregateRoot implements Activity {
 	@ApiProperty()
 	description: string;
 	@ApiProperty()
-	startingTime: string;
+	startTime: Date;
 	@ApiProperty()
-	endingTime: string;
-	@ApiProperty()
-	durationTime: number;
+	endTime: Date;
 	@ApiProperty()
 	maxParticipants: number;
 	@ApiProperty({ type: [Number] })
 	participants: number[];
 	@ApiProperty({ type: [Number] })
 	moderators: number[];
-	@ApiProperty()
-	date: string;
 	@ApiProperty()
 	environmentId: number;
 	@ApiProperty()
