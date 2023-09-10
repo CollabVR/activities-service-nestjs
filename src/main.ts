@@ -1,7 +1,6 @@
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TcpOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClientExceptionFilter } from './prisma/prisma-client-exception.filter';
@@ -11,7 +10,7 @@ async function bootstrap() {
 	const app = await NestFactory.createMicroservice(AppModule, {
 		transport: Transport.TCP,
 		options: {
-			host: 'localhost',
+			host: 'activity_service',
 			port: port,
 		},
 	} as TcpOptions);
