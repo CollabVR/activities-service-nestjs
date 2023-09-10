@@ -1,6 +1,6 @@
 version: '3'
 services:
-  backend:
+  activity_service:
     build: ./
     container_name: activity_service
     ports:

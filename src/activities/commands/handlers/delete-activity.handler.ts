@@ -16,6 +16,7 @@ export class DeleteActivityHandler
 			});
 			return activity;
 		} catch (error) {
+			console.log('error', error);
 			throw new RpcException(error);
 		}
 	}

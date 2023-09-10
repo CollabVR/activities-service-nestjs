@@ -1,10 +1,19 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { TcpOptions, Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
+import { PrismaClientExceptionFilter } from './prisma/prisma-client-exception.filter';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const port = Number(new ConfigService().get('PORT'));
+	const app = await NestFactory.createMicroservice(AppModule, {
+		transport: Transport.TCP,
+		options: {
+			host: 'activity_service',
+			port: port,
+		},
+	} as TcpOptions);
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -14,17 +23,9 @@ async function bootstrap() {
 
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-	const swaggerConfig = new DocumentBuilder()
-		.setTitle('Account Management Service')
-		.setDescription('API Description')
-		.setVersion('1.0')
-		.addBearerAuth()
-		.build();
+	const { httpAdapter } = app.get(HttpAdapterHost);
+	app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
-	const document = SwaggerModule.createDocument(app, swaggerConfig);
-	SwaggerModule.setup('api', app, document);
-
-	await app.listen(3200);
-	console.log(`Application is running on: ${await app.getUrl()}`);
+	await app.listen().then(() => console.log(`Running in port ${port}`));
 }
 bootstrap();

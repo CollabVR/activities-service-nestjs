@@ -17,6 +17,7 @@ export default class UpdateActivityHandler
 			});
 			return new ActivityEntity(activity);
 		} catch (error) {
+			console.log('error', error);
 			throw new RpcException(error);
 		}
 	}

@@ -6,6 +6,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import UpdateActivityHandler from './commands/handlers/update-activity.handler';
 import { GetActivityByIdHandler } from './queries/handler/get-activity-by-id.handler';
 import { GetActivityByNameHandler } from './queries/handler/get-activity-by-name.handler';
+import { DeleteActivityHandler } from './commands/handlers/delete-activity.handler';
 
 @Module({
 	imports: [CqrsModule],
@@ -16,6 +17,7 @@ import { GetActivityByNameHandler } from './queries/handler/get-activity-by-name
 		UpdateActivityHandler,
 		GetActivityByIdHandler,
 		GetActivityByNameHandler,
+		DeleteActivityHandler,
 	],
 })
 export class ActivitiesModule {}
