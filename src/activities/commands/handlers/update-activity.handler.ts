@@ -19,15 +19,15 @@ export default class UpdateActivityHandler
 
 			// Combine the activityStudents and activityModerators to form activityUsers
 			const activityUsers = [
-				...students?.map((moderator) => ({
+				...students?.map((student) => ({
+					userId: student.id,
+					userName: student.name,
+					role: UserRole.STUDENT,
+				})),
+				...moderators?.map((moderator) => ({
 					userId: moderator.id,
 					userName: moderator.name,
 					role: UserRole.MODERATOR,
-				})),
-				...moderators?.map((participant) => ({
-					userId: participant.id,
-					userName: participant.name,
-					role: UserRole.STUDENT,
 				})),
 			];
 
