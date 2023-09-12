@@ -18,6 +18,6 @@ export class CreateActivityDto {
 	@IsNumber()
 	public maxParticipants: number;
 	@ApiProperty()
-	@IsNumber()
-	public environmentId: number;
+	@IsString()
+	public environmentId: string;
 }

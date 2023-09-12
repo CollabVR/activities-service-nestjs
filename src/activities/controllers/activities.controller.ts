@@ -1,19 +1,9 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Param,
-	ParseIntPipe,
-	Post,
-	Put,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateActivityCommand } from '../commands/impl/create-activity.command';
 import { ActivityEntity } from '../domain/activity.entity';
-import { CreateActivityDto, UpdateActivityDto } from '../dtos';
+import { CreateActivityDto } from '../dtos';
 import { GetActivitiesQuery } from '../queries/impl/get-activities.query';
-import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { GetActivityByIdQuery } from '../queries/impl/get-activity-by-id.query';
 import { GetActivityByNameQuery } from '../queries/impl/get-activity-by-name.query copy';
 import DeleteActivityCommand from '../commands/impl/delete-activity.command';

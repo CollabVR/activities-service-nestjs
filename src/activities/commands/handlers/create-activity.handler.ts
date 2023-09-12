@@ -19,8 +19,6 @@ export class CreateActivityHandler
 					startTime: command.createActivityDto.startTime,
 					endTime: command.createActivityDto.endTime,
 					maxParticipants: command.createActivityDto.maxParticipants,
-					participants: [],
-					moderators: [],
 					environmentId: command.createActivityDto.environmentId,
 					status: 'created',
 				},
