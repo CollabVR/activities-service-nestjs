@@ -7,10 +7,11 @@ import { PrismaClientExceptionFilter } from './prisma/prisma-client-exception.fi
 
 async function bootstrap() {
 	const port = Number(new ConfigService().get('PORT'));
+	const host = new ConfigService().get('HOST');
 	const app = await NestFactory.createMicroservice(AppModule, {
 		transport: Transport.TCP,
 		options: {
-			host: 'activity_service',
+			host: host,
 			port: port,
 		},
 	} as TcpOptions);

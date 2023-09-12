@@ -13,6 +13,9 @@ export class GetActivityByNameHandler
 	async execute(query: GetActivityByNameQuery): Promise<Activity> {
 		const activity = await this.prisma.activity.findUnique({
 			where: { name: query.name },
+			include: {
+				activityUsers: true,
+			},
 		});
 		return new ActivityEntity(activity);
 	}

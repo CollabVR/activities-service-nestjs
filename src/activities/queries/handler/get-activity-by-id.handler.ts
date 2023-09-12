@@ -13,6 +13,9 @@ export class GetActivityByIdHandler
 	async execute(query: GetActivityByIdQuery): Promise<Activity> {
 		const activity = await this.prisma.activity.findUnique({
 			where: { id: query.id },
+			include: {
+				activityUsers: true,
+			},
 		});
 		return new ActivityEntity(activity);
 	}

@@ -14,8 +14,23 @@ model Activity {
   startTime       String
   endTime         String
   maxParticipants Int
-  participants    Int[]
-  moderators      Int[]
-  environmentId   Int
+  activityUsers   ActivityUser[]
+  environmentId   String
   status          String
+}
+
+
+enum UserRole {
+  STUDENT
+  MODERATOR
+}
+
+model ActivityUser {
+  id          Int       @id @default(autoincrement())
+  activityId  Int      
+  userId      Int       @unique
+  userName    String
+  role        UserRole
+  activity    Activity  @relation(fields: [activityId], references: [id])
+  @@index([activityId])
 }
