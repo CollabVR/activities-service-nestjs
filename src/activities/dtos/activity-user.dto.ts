@@ -4,9 +4,9 @@ import { IsNumber, IsString } from 'class-validator';
 export class ActivityUserDto {
 	@ApiProperty()
 	@IsNumber()
-	id: number;
+	userId: number;
 
 	@ApiProperty()
 	@IsString()
-	name: string;
+	userName: string;
 }
