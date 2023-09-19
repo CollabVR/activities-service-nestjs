@@ -31,6 +31,26 @@ export default class UpdateActivityHandler
 				})),
 			];
 
+			// Fetch the current activityUsers associated with the activity
+			const currentActivityUsers = await this.prisma.activityUser.findMany({
+				where: { activityId: command.activityId },
+			});
+
+			// Find users to delete
+			const usersToDelete = currentActivityUsers.filter(
+				(user) =>
+					!activityUsers.some(
+						(updatedUser) => updatedUser.userId === user.userId,
+					),
+			);
+
+			// Delete the users
+			for (const user of usersToDelete) {
+				await this.prisma.activityUser.delete({
+					where: { userId: user.userId },
+				});
+			}
+
 			// Merge transformed data with other update fields
 			const updateData = {
 				...otherFields,
@@ -51,7 +71,7 @@ export default class UpdateActivityHandler
 					},
 				},
 				include: {
-					activityUsers: true, // Make sure to include this if you want it to be returned
+					activityUsers: true,
 				},
 			});
 			console.log('HERE');
