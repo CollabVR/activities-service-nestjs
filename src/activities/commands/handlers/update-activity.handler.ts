@@ -72,15 +72,7 @@ export default class UpdateActivityHandler
 									userId: activityUser.userId,
 								},
 							},
-							update: {
-								user: {
-									connect: { id: activityUser.userId },
-									update: {
-										userName: activityUser.userName,
-										role: activityUser.role,
-									},
-								},
-							},
+							update: {},
 							create: {
 								activityId: command.activityId,
 								user: {
