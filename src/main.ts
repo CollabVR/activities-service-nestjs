@@ -1,9 +1,10 @@
-import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TcpOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClientExceptionFilter } from './prisma/prisma-client-exception.filter';
+import { RpcExceptionFilter } from './common/rcp-exception.filter';
 
 async function bootstrap() {
 	const port = Number(new ConfigService().get('PORT'));
@@ -24,8 +25,8 @@ async function bootstrap() {
 
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-	const { httpAdapter } = app.get(HttpAdapterHost);
-	app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+	app.useGlobalFilters(new RpcExceptionFilter());
+	app.useGlobalFilters(new PrismaClientExceptionFilter());
 
 	await app.listen().then(() => console.log(`Running in port ${port}`));
 }

@@ -7,6 +7,7 @@ import UpdateActivityHandler from './commands/handlers/update-activity.handler';
 import { GetActivityByIdHandler } from './queries/handler/get-activity-by-id.handler';
 import { GetActivityByNameHandler } from './queries/handler/get-activity-by-name.handler';
 import { DeleteActivityHandler } from './commands/handlers/delete-activity.handler';
+import { GetActivitiesByUserIdHandler } from './queries/handler/get-activities-by-userId.handler';
 
 @Module({
 	imports: [CqrsModule],
@@ -18,6 +19,7 @@ import { DeleteActivityHandler } from './commands/handlers/delete-activity.handl
 		GetActivityByIdHandler,
 		GetActivityByNameHandler,
 		DeleteActivityHandler,
+		GetActivitiesByUserIdHandler,
 	],
 })
 export class ActivitiesModule {}

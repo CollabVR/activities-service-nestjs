@@ -3,7 +3,7 @@ import UpdateActivityCommand from '../impl/update-activity.command';
 import { RpcException } from '@nestjs/microservices';
 import { ActivityEntity } from 'src/activities/domain/activity.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Activity, ActivityUser, User, UserRole } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 
 @CommandHandler(UpdateActivityCommand)
 export default class UpdateActivityHandler
@@ -60,7 +60,7 @@ export default class UpdateActivityHandler
 			};
 
 			// Update the activity using Prisma
-			const activity = (await this.prisma.activity.update({
+			const activity = await this.prisma.activity.update({
 				where: { id: command.activityId },
 				data: {
 					...updateData,
@@ -82,7 +82,7 @@ export default class UpdateActivityHandler
 						include: { user: true }, // Include the user to get the userName
 					},
 				},
-			})) as Activity & { activityUsers: (ActivityUser & { user: User })[] };
+			});
 
 			// Adjust the returned activity to include the userName in the ActivityUser
 			activity.activityUsers = activity.activityUsers.map((au) => ({
