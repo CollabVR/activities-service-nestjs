@@ -40,11 +40,27 @@ export class ActivityEntity extends AggregateRoot {
 		// Filter and map participants to activityStudents based on their role
 		this.students = partial.activityUsers
 			?.filter((p) => p.role === UserRole.STUDENT)
-			.map((p) => new ActivityUserEntity(p));
+			.map((p) => {
+				new ActivityUserEntity({
+					id: p.id,
+					activityId: p.activityId,
+					userId: p.user.userId,
+					role: p.user.role,
+					userName: p.user.userName,
+				});
+			});
 
 		// Filter and map moderators to activityModerators based on their role
 		this.moderators = partial.activityUsers
 			?.filter((m) => m.role === UserRole.MODERATOR)
-			.map((m) => new ActivityUserEntity(m));
+			.map((p) => {
+				new ActivityUserEntity({
+					id: p.id,
+					activityId: p.activityId,
+					userId: p.user.userId,
+					role: p.user.role,
+					userName: p.user.userName,
+				});
+			});
 	}
 }
