@@ -9,6 +9,7 @@ import { GetActivityByNameQuery } from '../queries/impl/get-activity-by-name.que
 import DeleteActivityCommand from '../commands/impl/delete-activity.command';
 import UpdateActivityCommand from '../commands/impl/update-activity.command';
 import { MessagePattern } from '@nestjs/microservices';
+import { GetActivitiesByUserIdQuery } from '../queries/impl/get-activities.by-userId.query';
 
 @Controller('activities')
 export class ActivitiesController {
@@ -50,5 +51,10 @@ export class ActivitiesController {
 	@MessagePattern('get-activity-by-name')
 	async getActivityByName({ name }): Promise<ActivityEntity> {
 		return this.queryBus.execute(new GetActivityByNameQuery(name));
+	}
+
+	@MessagePattern('get-activities-by-user-id')
+	async getActivitiesByUserId({ userId }): Promise<ActivityEntity> {
+		return this.queryBus.execute(new GetActivitiesByUserIdQuery(userId));
 	}
 }
