@@ -72,9 +72,8 @@ export default class UpdateActivityHandler
 									userId: activityUser.userId,
 								},
 							},
-							update: {},
+							update: {}, // No updates to the ActivityUser itself
 							create: {
-								activityId: command.activityId,
 								user: {
 									connectOrCreate: {
 										where: { userId: activityUser.userId },
