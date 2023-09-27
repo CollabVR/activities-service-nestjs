@@ -72,8 +72,20 @@ export default class UpdateActivityHandler
 									userId: activityUser.userId,
 								},
 							},
-							update: activityUser,
-							create: activityUser,
+							update: {
+								user: {
+									connect: { id: activityUser.userId },
+									update: { userName: activityUser.userName }, // Update the userName of the related User
+								},
+								role: activityUser.role,
+							},
+							create: {
+								user: {
+									connect: { id: activityUser.userId },
+									create: { userName: activityUser.userName }, // Create a new User with the given userName
+								},
+								role: activityUser.role,
+							},
 						})),
 					},
 				},
