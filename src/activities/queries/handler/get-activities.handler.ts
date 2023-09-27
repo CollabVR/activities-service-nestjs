@@ -9,11 +9,20 @@ export class GetActivitiesHandler implements IQueryHandler<GetActivitiesQuery> {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async execute(): Promise<Activity[]> {
-		const activity = this.prisma.activity.findMany({
+		const activities = await this.prisma.activity.findMany({
 			include: {
-				activityUsers: true,
+				activityUsers: {
+					include: { user: true }, // Include the user to get the userName
+				},
 			},
 		});
-		return (await activity).map((activity) => new ActivityEntity(activity));
+
+		return activities.map((activity) => {
+			activity.activityUsers = activity.activityUsers.map((au) => ({
+				...au,
+				userName: au.user.userName,
+			}));
+			return new ActivityEntity(activity);
+		});
 	}
 }

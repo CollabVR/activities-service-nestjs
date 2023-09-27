@@ -14,9 +14,15 @@ export class GetActivityByNameHandler
 		const activity = await this.prisma.activity.findUnique({
 			where: { name: query.name },
 			include: {
-				activityUsers: true,
+				activityUsers: {
+					include: { user: true }, // Include the user to get the userName
+				},
 			},
 		});
+		activity.activityUsers = activity.activityUsers.map((au) => ({
+			...au,
+			userName: au.user.userName,
+		}));
 		return new ActivityEntity(activity);
 	}
 }
