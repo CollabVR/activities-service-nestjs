@@ -8,8 +8,8 @@ datasource db {
 }
 
 model Activity {
-  id              Int    @id @default(autoincrement())
-  name            String @unique
+  id              Int            @id @default(autoincrement())
+  name            String         @unique
   description     String
   startTime       String
   endTime         String
@@ -19,18 +19,26 @@ model Activity {
   status          String
 }
 
-
 enum UserRole {
   STUDENT
   MODERATOR
 }
 
+model User {
+  id            Int            @id @default(autoincrement())
+  userId        Int            @unique
+  userName  String
+  role        UserRole
+  activityUsers ActivityUser[]
+}
+
 model ActivityUser {
   id          Int       @id @default(autoincrement())
-  activityId  Int      
-  userId      Int       @unique
-  userName    String
-  role        UserRole
+  activityId  Int
+  userId      Int
   activity    Activity  @relation(fields: [activityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   @@index([activityId])
+  @@index([userId])
+   @@unique([activityId, userId])
 }

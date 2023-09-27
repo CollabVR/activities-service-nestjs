@@ -3,13 +3,14 @@ import UpdateActivityCommand from '../impl/update-activity.command';
 import { RpcException } from '@nestjs/microservices';
 import { ActivityEntity } from 'src/activities/domain/activity.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserRole } from '@prisma/client';
+import { Activity, ActivityUser, User, UserRole } from '@prisma/client';
 
 @CommandHandler(UpdateActivityCommand)
 export default class UpdateActivityHandler
 	implements ICommandHandler<UpdateActivityCommand>
 {
 	constructor(private readonly prisma: PrismaService) {}
+
 	async execute(command: UpdateActivityCommand): Promise<ActivityEntity> {
 		console.log('command', command.updateActivityDto);
 		try {
@@ -34,6 +35,7 @@ export default class UpdateActivityHandler
 			// Fetch the current activityUsers associated with the activity
 			const currentActivityUsers = await this.prisma.activityUser.findMany({
 				where: { activityId: command.activityId },
+				include: { user: true }, // Include the user to get the userName
 			});
 
 			// Find users to delete
@@ -47,7 +49,7 @@ export default class UpdateActivityHandler
 			// Delete the users
 			for (const user of usersToDelete) {
 				await this.prisma.activityUser.delete({
-					where: { userId: user.userId },
+					where: { id: user.id }, // Use the ID of the ActivityUser instead of userId
 				});
 			}
 
@@ -58,22 +60,36 @@ export default class UpdateActivityHandler
 			};
 
 			// Update the activity using Prisma
-			const activity = await this.prisma.activity.update({
+			const activity = (await this.prisma.activity.update({
 				where: { id: command.activityId },
 				data: {
 					...updateData,
 					activityUsers: {
 						upsert: activityUsers.map((activityUser) => ({
-							where: { userId: activityUser.userId },
+							where: {
+								activityId_userId: {
+									activityId: command.activityId,
+									userId: activityUser.userId,
+								},
+							},
 							update: activityUser,
 							create: activityUser,
 						})),
 					},
 				},
 				include: {
-					activityUsers: true,
+					activityUsers: {
+						include: { user: true }, // Include the user to get the userName
+					},
 				},
-			});
+			})) as Activity & { activityUsers: (ActivityUser & { user: User })[] };
+
+			// Adjust the returned activity to include the userName in the ActivityUser
+			activity.activityUsers = activity.activityUsers.map((au) => ({
+				...au,
+				userName: au.user.userName,
+			}));
+
 			console.log('HERE');
 			console.log('activity', activity);
 			return new ActivityEntity(activity);
