@@ -46,12 +46,12 @@ export default class UpdateActivityHandler
 					),
 			);
 
-			// Delete the users
-			for (const user of usersToDelete) {
-				await this.prisma.activityUser.delete({
-					where: { id: user.id }, // Use the ID of the ActivityUser instead of userId
-				});
-			}
+			const usersToDeleteIds = usersToDelete.map((user) => user.id);
+
+			// Batch delete the users
+			await this.prisma.activityUser.deleteMany({
+				where: { id: { in: usersToDeleteIds } },
+			});
 
 			// Merge transformed data with other update fields
 			const updateData = {
@@ -75,14 +75,24 @@ export default class UpdateActivityHandler
 							update: {
 								user: {
 									connect: { id: activityUser.userId },
+									update: {
+										userName: activityUser.userName,
+										role: activityUser.role,
+									},
 								},
-								role: activityUser.role,
 							},
 							create: {
+								activityId: command.activityId,
 								user: {
-									connect: { id: activityUser.userId },
+									connectOrCreate: {
+										where: { userId: activityUser.userId },
+										create: {
+											userId: activityUser.userId,
+											userName: activityUser.userName,
+											role: activityUser.role,
+										},
+									},
 								},
-								role: activityUser.role,
 							},
 						})),
 					},
