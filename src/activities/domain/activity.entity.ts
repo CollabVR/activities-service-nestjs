@@ -36,15 +36,19 @@ export class ActivityEntity extends AggregateRoot {
 		this.maxParticipants = partial.maxParticipants;
 		this.environmentId = partial.environmentId;
 		this.status = partial.status;
-
+		console.log("partial", partial)
+		
 		// Filter and map participants to activityStudents based on their role
 		this.students = partial.activityUsers
-			?.filter((p) => p.role === UserRole.STUDENT)
+			?.filter((p) => {
+				console.log("students find:", p)
+				return p.user.role === UserRole.STUDENT;
+			})
 			.map((p) => {
-				new ActivityUserEntity({
+				return new ActivityUserEntity({
 					id: p.id,
 					activityId: p.activityId,
-					userId: p.user.userId,
+					userId: p.userId,
 					role: p.user.role,
 					userName: p.user.userName,
 				});
@@ -52,12 +56,15 @@ export class ActivityEntity extends AggregateRoot {
 
 		// Filter and map moderators to activityModerators based on their role
 		this.moderators = partial.activityUsers
-			?.filter((m) => m.role === UserRole.MODERATOR)
+			?.filter((m) => {
+				console.log("moderators find:", m)
+				return m.user.role === UserRole.MODERATOR
+			})
 			.map((p) => {
-				new ActivityUserEntity({
+				return new ActivityUserEntity({
 					id: p.id,
 					activityId: p.activityId,
-					userId: p.user.userId,
+					userId: p.userId,
 					role: p.user.role,
 					userName: p.user.userName,
 				});
