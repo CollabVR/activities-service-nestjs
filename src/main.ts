@@ -7,12 +7,11 @@ import { PrismaClientExceptionFilter } from './prisma/prisma-client-exception.fi
 import { RpcExceptionFilter } from './common/rcp-exception.filter';
 
 async function bootstrap() {
-	const port = Number(new ConfigService().get('PORT'));
-	const host = new ConfigService().get('HOST');
+	const port = 3000;
 	const app = await NestFactory.createMicroservice(AppModule, {
 		transport: Transport.TCP,
 		options: {
-			host: host,
+			host: 'activity_service',
 			port: port,
 		},
 	} as TcpOptions);
